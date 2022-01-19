@@ -1,3 +1,7 @@
+.DS_Store
+__pycache__
+*.pyc
+
 # Prerequisites
 *.d
 
@@ -23,7 +27,7 @@
 # Compiled Static libraries
 *.lai
 *.la
-*.a
+#*.a
 *.lib
 
 # Executables
