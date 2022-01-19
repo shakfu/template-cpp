@@ -1,6 +1,6 @@
 # template-cpp
 
-A pre-structured cpp template.
+A pre-structured cpp template with x86_64 macOS static libraries. 
 
 
 ## Todo
