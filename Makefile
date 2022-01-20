@@ -1,3 +1,5 @@
+APP = app
+
 all: build
 
 
@@ -11,6 +13,10 @@ run: build
 
 release:
 	@./scripts/build_release.sh
+
+test:
+	@./build/debug/bin/test_$(APP)
+
 
 format:
 	@find ./src/ -iname *.h -o -iname *.cpp | xargs clang-format -i

@@ -28,3 +28,4 @@ Includes the following libraries:
 - [x] [libpqxx](https://github.com/jtv/libpqxx) for postgresql access
 - [x] [indicators](https://github.com/p-ranav/indicators/) library
 - [x] [cpr](https://github.com/libcpr/cpr) for http requests
+- [x] [libxlsxwriter](https://github.com/jmcnamara/libxlsxwriter) for generating xl files

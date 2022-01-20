@@ -12,6 +12,7 @@
 #include <taskflow/taskflow.hpp>
 #include <toml.hpp>
 #include <webview.h>
+#include <xlsxwriter.h>
 #include <zmq.hpp>
 
 #include "core/process.hpp"
@@ -47,6 +48,7 @@ int main(int argc, char *argv[])
     args::Flag pg(group, "pg", "run postgres demo", {'p', "pg"});
     args::Flag bar(group, "bar", "run indicators demo", {'b', "bar"});
     args::Flag request(group, "request", "run cpr demo", {'r', "request"});
+    args::Flag xlsx(group, "xlsx", "run xlsxwriter demo", {'x', "xlsx"});
 
     try
     {
@@ -165,6 +167,16 @@ int main(int argc, char *argv[])
         cpr::Response r = cpr::Get(cpr::Url{"https://python.org"});
         spdlog::info("status code: ", r.status_code);
         cout << r.text << endl;    
+    }
+    if (xlsx)
+    {
+        spdlog::info("Welcome to prolog::xlsx");
+        lxw_workbook  *workbook  = workbook_new("demo.xlsx");
+        lxw_worksheet *worksheet = workbook_add_worksheet(workbook, NULL);
+        int row = 0;
+        int col = 0;
+        worksheet_write_string(worksheet, row, col, "Hello me!", NULL);
+        workbook_close(workbook);
     }
     return 0;
 }

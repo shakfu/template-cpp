@@ -69,6 +69,9 @@ target_link_libraries(app-exe
         "-framework Security"
         "-framework SystemConfiguration"
 
+    # xlsxwriter (requires z)
+        xlsxwriter
+
 )
 
 
