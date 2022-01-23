@@ -24,21 +24,16 @@
 
 int main(int argc, char *argv[])
 {
-    // configuration
-    try
-    {
-        auto config = toml::parse_file("config.toml");
-        std::string_view library_name = config["version"].value_or("0.0.0");
-        cout << "Version: " << library_name << endl;
-    }
-    catch (toml::parse_error &e)
-    {
-        spdlog::error("toml::parse_file 'config.toml'", e.what());
-    }
-
     // options
     args::ArgumentParser parser("This the app main program.",
                                 "This goes after the options.");
+    args::HelpFlag help(parser, "help", "Display this help menu", {'h', "help"});
+    args::CompletionFlag completion(parser, {"complete"});
+
+    // optional file-based configuration (.toml)
+    args::ValueFlag<std::string> config(parser, "config", "path to config file", {'c', "config"});
+
+
     args::Group group(
         parser, "This group is all exclusive:", args::Group::Validators::Xor);
     args::Flag demo(group, "demo", "run demo", {'d', "demo"});
@@ -54,12 +49,17 @@ int main(int argc, char *argv[])
     {
         parser.ParseCLI(argc, argv);
     }
-    catch (args::Help)
+    catch (const args::Completion& e)
+    {
+        std::cout << e.what();
+        return 0;
+    }    
+    catch (const args::Help&)
     {
         std::cout << parser;
         return 0;
     }
-    catch (args::ParseError e)
+    catch (const args::ParseError& e)
     {
         spdlog::error("args::ParseError", e.what());
         std::cerr << parser;
@@ -67,10 +67,27 @@ int main(int argc, char *argv[])
     }
     catch (args::ValidationError e)
     {
-        std::cerr << e.what() << std::endl;
+        // std::cerr << e.what() << std::endl;
         std::cerr << parser;
         return 1;
     }
+
+    if (config)
+    {
+        spdlog::info("loading confile file");
+        try
+        {
+            auto cfg = toml::parse_file(args::get(config));
+            std::string_view library_name = cfg["version"].value_or("0.0.0");
+            cout << "Version: " << library_name << endl;
+        }
+        catch (toml::parse_error &e)
+        {
+            spdlog::error("toml::parse_file 'config.toml'", e.what());
+        }
+
+    }
+
     if (demo)
     {
         spdlog::info("Welcome to app::demo");
