@@ -74,7 +74,7 @@ int main(int argc, char *argv[])
 
     if (config)
     {
-        spdlog::info("loading confile file");
+        spdlog::info("loading config file");
         try
         {
             auto cfg = toml::parse_file(args::get(config));
